@@ -12,7 +12,7 @@ class AlphabetGroups(object):
 
     def __init__(self, number_groups):
         group_employees = Employee.objects.all().values('index').annotate(count=Count('id')).order_by('index')
-        number_in_group = self.get_number_in_group(group_employees, number_groups)
+        number_in_group = AlphabetGroups.get_number_in_group(group_employees, number_groups)
         self.groups = AlphabetGroups.grouped(group_employees, number_in_group)
 
     @staticmethod
