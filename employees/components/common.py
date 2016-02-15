@@ -10,10 +10,12 @@ class AlphabetGroups(object):
             self.limit = limit
             self.name = name
 
-    def __init__(self, number_groups):
+    @staticmethod
+    def get_groups(number_groups):
         group_employees = Employee.objects.all().values('index').annotate(count=Count('id')).order_by('index')
         number_in_group = AlphabetGroups.get_number_in_group(group_employees, number_groups)
-        self.groups = AlphabetGroups.grouped(group_employees, number_in_group)
+        groups = AlphabetGroups.grouped(group_employees, number_in_group)
+        return groups
 
     @staticmethod
     def grouped(group_employees, number_in_group):

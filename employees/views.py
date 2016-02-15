@@ -36,6 +36,6 @@ def index(request):
         employees = Employee.objects.all().order_by('index')[offset:limit]
     except ValueError:
         pass
-    alphabet_groups = AlphabetGroups(number_groups).groups
+    alphabet_groups = AlphabetGroups.get_groups(number_groups)
     context = {'employees': employees, 'alphabet_groups': alphabet_groups}
     return render(request, 'employees/index.html', context)
