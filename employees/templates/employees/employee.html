@@ -1,0 +1,19 @@
+{% extends "employees/base.html" %}
+
+{% block title %}Сотрудник{% endblock %}
+
+{% block content %}
+<h4>Сотрудник</h4>
+<p>{{ employee.surname }} {{ employee.name }} {{ employee.middle_name }}</p>
+<p>Должность: {{ employee.post }}</p>
+<p>Отдел: {{ employee.departament }}</p>
+<p>Дата рождения: {{ employee.birthday|date:"d.m.Y" }}</p>
+<p>E-mail: {{ employee.email }}</p>
+<p>Телефон: {{ employee.phone }}</p>
+<p>Период работы: {{ employee.begin_work|date:"d.m.Y" }} -
+    {% if employee.end_work %}
+        {{ employee.end_work|date:"d.m.Y" }}
+    {% else %}
+        Настоящее время
+    {% endif %}</p>
+{% endblock content %}

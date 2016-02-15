@@ -1,0 +1,38 @@
+{% extends "employees/base.html" %}
+
+{% block title %}Список сотрудников{% endblock %}
+
+{% block content %}
+<div class="col-md-4">
+    <h4>Сотрудники</h4>
+    {% for employee in employees %}
+    <p><a href="/employees/{{ employee.id }}/">{{ employee.surname }}</a></p>
+    {% endfor %}
+    <!--Pagination-->
+    <ul class="pagination">
+        {% if employees.has_previous %}
+            <li><a href="?page={{ employees.previous_page_number }}">&laquo;</a></li>
+        {% endif %}
+        <li><a>{{ employees.number }} из {{ employees.paginator.num_pages }}</a></li>
+        {% if employees.has_next %}
+            <li><a href="?page={{ employees.next_page_number }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="col-md-4">
+    <h4>Фильтр</h4>
+    <form action="" method="get">
+        {% load app_filters %}
+        <div class="form-group">
+            <label for="{{ filter.form.departament.id_for_label }}">Отдел</label>
+            {{ filter.form.departament|addcss:"form-control" }}
+        </div>
+        <div>
+            <label for="{{ filter.form.is_worked.id_for_label }}">Работает в компании</label>
+            {{ filter.form.is_worked|addcss:"form-control" }}
+        </div>
+        <br/>
+		<button type="submit" class="btn btn-success">Применить</button>
+	</form>
+</div>
+{% endblock content %}

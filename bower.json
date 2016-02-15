@@ -1,0 +1,12 @@
+{
+  "name": "eastwood_test_task",
+  "description": "A starter project for eastwood",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dmtmalin/eastwood_test_task.git",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {   
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.1.1"
+  }
+}
