@@ -2,13 +2,13 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from employees.models import Employee
-from employees.forms import EmployeeFilter
-from employees.components.common import AlphabetGroups
+from employees.components.group import get_groups
+from employees.components.remember import get_minded_filter
 
 
 # Предоставляет отфильтрованный список сотрудников в виде страниц
 def employees_list(request):
-    f = EmployeeFilter(request.GET, queryset=Employee.objects.all().order_by('surname'))
+    f = get_minded_filter(request)
     paginator = Paginator(f, 3)
     page = request.GET.get('page')
     try:
@@ -36,6 +36,6 @@ def index(request):
         employees = Employee.objects.all().order_by('index')[offset:limit]
     except ValueError:
         pass
-    alphabet_groups = AlphabetGroups.get_groups(number_groups)
+    alphabet_groups = get_groups(number_groups)
     context = {'employees': employees, 'alphabet_groups': alphabet_groups}
     return render(request, 'employees/index.html', context)
