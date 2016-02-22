@@ -1,41 +1,40 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from employees.forms import EmployeeFilter
+from django_filters.views import FilterView
+from django.views.generic import ListView
 from employees.models import Employee
 from employees.components.group import get_groups
-from employees.components.remember import get_minded_filter
+from employees.components.minded import get_minded_request
 
 
 # Предоставляет отфильтрованный список сотрудников в виде страниц
-def employees_list(request):
-    f = get_minded_filter(request)
-    paginator = Paginator(f, 3)
-    page = request.GET.get('page')
-    try:
-        e = paginator.page(page)
-    except PageNotAnInteger:
-        e = paginator.page(1)
-    except EmptyPage:
-        e = paginator.page(paginator.num_pages)
-    return render(request, 'employees/employees.html', {'filter': f, 'employees': e})
+class EmployeeList(FilterView):
+    filterset_class = EmployeeFilter
+    context_object_name = 'employees'
+    template_name = 'employees/employee_list.html'
+    paginate_by = 3
 
-
-# Предоставляет информацию о сотруднике по id
-def employee(request, id):
-    e = Employee.objects.get(id=id)
-    return render(request, 'employees/employee.html', {'employee': e})
+    def get_filterset(self, filterset_class):
+        r = get_minded_request(self.request)
+        return filterset_class(r, queryset=Employee.objects.all().order_by('surname'))
 
 
 # Предоставляет сгруппированный список сотрудников по алфавиту
-def index(request):
-    employees = []
+class IndexList(ListView):
+    template_name = 'employees/index.html'
+    context_object_name = 'employees'
     number_groups = 7
-    offset = request.GET.get('offset', 0)
-    limit = request.GET.get('limit', 0)
-    try:
-        employees = Employee.objects.all().order_by('index')[offset:limit]
-    except ValueError:
-        pass
-    alphabet_groups = get_groups(number_groups)
-    context = {'employees': employees, 'alphabet_groups': alphabet_groups}
-    return render(request, 'employees/index.html', context)
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexList, self).get_context_data(**kwargs)
+        context['alphabet_groups'] = get_groups(self.number_groups)
+        return context
+
+    def get_queryset(self):
+        offset, limit = self.request.GET.get('offset', 0), self.request.GET.get('limit', 0)
+        employees = []
+        try:
+            employees = Employee.objects.all().order_by('index')[offset:limit]
+        except ValueError:
+            pass
+        return employees

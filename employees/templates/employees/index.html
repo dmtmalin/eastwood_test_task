@@ -9,9 +9,8 @@
         {{ group.name }}
     </a>
 {% endfor %}
-
-<h4>Сотрудники</h4>
-{% for employee in employees %}
+    <h4>Сотрудники</h4>
+    {% for employee in employees %}
     <p><a href="/employees/{{ employee.id }}/">{{ employee.surname }}</a></p>
-{% endfor %}
+    {% endfor %}
 {% endblock content %}

@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.views.generic import TemplateView
-
-from employees import views
+from django.views.generic import TemplateView, DetailView
+from employees.models import Employee
+from employees.views import EmployeeList, IndexList
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', TemplateView.as_view(template_name='employees/home.html')),
-    url(r'^employees/$', views.employees_list),
-    url(r'^employees/(?P<id>\d+)/$', views.employee),
-    url(r'^index/$', views.index),
+    url(r'^employees/$', EmployeeList.as_view()),
+    url(r'^employees/(?P<pk>\d+)/$', DetailView.as_view(model=Employee, template_name='employees/employee.html')),
+    url(r'^index/$', IndexList.as_view()),
+    url(r'^index_list/$', IndexList.as_view()),
 ]

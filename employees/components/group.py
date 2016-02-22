@@ -18,13 +18,11 @@ def get_groups(number_groups):
 
 def grouped(group_employees, number_in_group):
     groups = []
-    offset = 0
+    offset, limit = 0, 0
     offset_name = group_employees[0]['index'] if len(group_employees) > 0 else ''
-    limit = 0
     limit_name = ''
     sum_count = 0
-    for i in range(len(group_employees)):
-        item = group_employees[i]
+    for i, item in enumerate(group_employees):
         if sum_count <= number_in_group:
             limit += item['count']
             limit_name = item['index']

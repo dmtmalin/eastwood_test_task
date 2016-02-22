@@ -10,12 +10,12 @@
     {% endfor %}
     <!--Pagination-->
     <ul class="pagination">
-        {% if employees.has_previous %}
-            <li><a href="?page={{ employees.previous_page_number }}">&laquo;</a></li>
+        {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
         {% endif %}
-        <li><a>{{ employees.number }} из {{ employees.paginator.num_pages }}</a></li>
-        {% if employees.has_next %}
-            <li><a href="?page={{ employees.next_page_number }}">&raquo;</a></li>
+        <li><a>{{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</a></li>
+        {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
         {% endif %}
     </ul>
 </div>
