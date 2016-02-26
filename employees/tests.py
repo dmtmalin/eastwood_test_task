@@ -14,7 +14,7 @@ class GroupedTestCase(TestCase):
         groups = grouped(self.group, self.number_in_group)
         self.assertEquals(len(groups), 2)
 
-    def test_groups(self):
+    def test_employees_grouped(self):
         groups = get_groups(self.number_in_group)
         for g in groups:
             employees = Employee.objects.all()[g.offset:g.limit]
