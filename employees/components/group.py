@@ -27,9 +27,6 @@ def grouped(group_employees, number_in_group):
             limit += item['count']
             limit_name = item['index']
             sum_count += item['count']
-            if is_last_item(i, group_employees):
-                group = new_group(offset, offset_name, limit, limit_name)
-                groups.append(group)
         else:
             group = new_group(offset, offset_name, limit, limit_name)
             groups.append(group)
@@ -38,6 +35,9 @@ def grouped(group_employees, number_in_group):
             limit += item['count']
             limit_name = offset_name
             sum_count = item['count']
+        if is_last_item(i, group_employees):
+                group = new_group(offset, offset_name, limit, limit_name)
+                groups.append(group)
     return groups
 
 
