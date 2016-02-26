@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 
 class Departament(models.Model):
@@ -24,9 +26,10 @@ class Employee(models.Model):
     post = models.CharField(max_length=200)
     departament = models.ForeignKey(Departament)
 
-    def save(self, *args, **kwargs):
-        self.index = self.surname[0].upper()
-        super(Employee, self).save(*args, **kwargs)
-
     def __unicode__(self):
-        return "%s %s %s" % (self.surname, self.name, self.middle_name, )
+        return "%s %s %s" % (self.surname, self.name, self.middle_name,)
+
+
+@receiver(pre_save, sender=Employee)
+def add_index(sender, instance, *args, **kwargs):
+    instance.index = instance.surname[0].upper()
